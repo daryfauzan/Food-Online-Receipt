@@ -2,12 +2,18 @@
 FROM python:3.11-slim
 
 ENV PYTHONUNBUFFERED=1 \
-    UV_SYSTEM_PYTHON=1 \
-    PATH="/root/.cargo/bin:$PATH"
+    UV_SYSTEM_PYTHON=1
 
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+# Download the latest installer
+ADD https://astral.sh/uv/install.sh /uv-installer.sh
+
+# Run the installer then remove it
+RUN sh /uv-installer.sh && rm /uv-installer.sh
+
+# Ensure the installed binary is on the `PATH`
+ENV PATH="/root/.local/bin/:$PATH"
 
 WORKDIR /app
 
