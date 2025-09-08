@@ -10,6 +10,8 @@ dependencies = [
     "pillow>=11.3.0",
     "pydantic>=2.11.7",
     "python-dotenv>=1.1.1",
+    "ruff>=0.12.12",
     "sqlalchemy>=2.0.43",
     "streamlit>=1.49.1",
+    "tool>=0.8.0",
 ]
