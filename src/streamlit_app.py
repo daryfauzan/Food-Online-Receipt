@@ -1,15 +1,18 @@
 import streamlit as st
+from dotenv import load_dotenv
 
-from src.db import Base, engine
+from db import engine
+from models import Base
 
 Base.metadata.create_all(engine)
 
-home_page = st.Page("pages/home.py", title="Home", icon="🏠")
+load_dotenv("../.env")
+
 upload_page = st.Page(
     "pages/upload_receipt.py", title="Upload Receipt", icon="📷"
 )
 chat_page = st.Page("pages/chat.py", title="Ask AI", icon="💬")
 
 
-pg = st.navigation([home_page, upload_page, chat_page])
+pg = st.navigation([upload_page, chat_page])
 pg.run()

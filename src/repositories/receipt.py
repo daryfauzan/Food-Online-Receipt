@@ -1,10 +1,10 @@
 from sqlalchemy.orm import Session
 
-from src.models import ItemTable, ReceiptTable
-from src.services.scanner import Item, Receipt
+from models import ItemTable, ReceiptTable
+from services.scanner import Item, Receipt
 
 
-def add(self, session: Session, receipt: Receipt) -> int:
+def add(session: Session, receipt: Receipt) -> int:
     """Add a receipt and return its ID."""
     db_receipt = ReceiptTable(
         store_name=receipt.store_name,
@@ -23,7 +23,7 @@ def add(self, session: Session, receipt: Receipt) -> int:
     return db_receipt.id
 
 
-def get_by_date(self, session: Session, date: str) -> list[Receipt]:
+def get_by_date(session: Session, date: str) -> list[Receipt]:
     """Retrieve all receipts by date."""
     results = (
         session.query(ReceiptTable).filter(ReceiptTable.date == date).all()
