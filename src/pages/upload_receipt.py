@@ -26,3 +26,4 @@ if uploaded_file is not None:
         st.write(payload)
         with SessionLocal() as session:
             receipt.add(session, payload)
+        st.write("Image is uploaded")

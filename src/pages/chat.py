@@ -1,11 +1,11 @@
-import requests
 import streamlit as st
+
+from services.chat import run_agent
 
 st.set_page_config(page_title="Chat with AI", page_icon="💬")
 
 st.title("💬 Chat with AI")
 
-API_URL = "http://localhost:8000/chat"  # Replace with your API
 
 # Keep chat history in session state
 if "messages" not in st.session_state:
@@ -17,18 +17,15 @@ for msg in st.session_state["messages"]:
         st.write(msg["content"])
 
 # Chat input
-if prompt := st.chat_input("Type your message..."):
+prompt = st.chat_input("Type your message...")
+if prompt:
     # Add user message
     st.session_state["messages"].append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.write(prompt)
 
     try:
-        response = requests.post(API_URL, json={"message": prompt})
-        if response.status_code == 200:
-            reply = response.json().get("reply", "No response")
-        else:
-            reply = f"Error: {response.status_code}"
+        reply = run_agent(prompt)
     except Exception as e:
         reply = f"Error: {e}"
 

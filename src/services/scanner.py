@@ -1,6 +1,6 @@
 from langchain.output_parsers import PydanticOutputParser
 from langchain_google_genai import ChatGoogleGenerativeAI
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Item(BaseModel):
@@ -11,22 +11,14 @@ class Item(BaseModel):
 
 class Receipt(BaseModel):
     store_name: str
-    date: str
+    date: str = Field(
+        ..., description="Write the date in ISO Format YYYY-MM-DDTHH:mm:ss"
+    )
     items: list[Item]
     total: float
 
 
 parser = PydanticOutputParser(pydantic_object=Receipt)
-
-# prompt = PromptTemplate(
-#     template=(
-#         "Extract the receipt information from the text below.\n\n"
-#         "Text:\n{receipt_text}\n\n"
-#         "{format_instructions}"
-#     ),
-#     input_variables=["receipt_text"],
-#     partial_variables={"format_instructions": parser.get_format_instructions()},
-# )
 
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.0-flash",
